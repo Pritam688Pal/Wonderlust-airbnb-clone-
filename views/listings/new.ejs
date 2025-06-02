@@ -1,0 +1,31 @@
+<% layout("./layouts/boilerplate.ejs") %>
+    <h2>Create new Listing</h2>
+    <form action="/listings" method="post" class="needs-validation" novalidate>
+        <label for="title" class="form-label">Title* : </label>
+        <input type="text" name="listing[title]" class="form-control" required>
+        <br>
+        <br>
+        <label for="description" class="form-label">description : </label>
+        <textarea rows="5" name="listing[description]" id="listing[description]" class="form-control"></textarea>
+        <br>
+        <br>
+        <label for="img" class="form-label">img : </label>
+        <input type="text" name="listing[image]" class="form-control">
+        <br>
+        <br>
+        <label for="price" class="form-label">price* : </label>
+        <input type="number" name="listing[price]" class="form-control" required>
+        <br>
+        <br>
+        <label for="location" class="form-label">location* : </label>
+        <input type="text" name="listing[location]" class="form-control" required>
+        <br>
+        <br>
+        <label for="country" class="form-label">country* : </label>
+        <input type="text" name="listing[country]" class="form-control" required>
+        <br>
+        <br>
+        <center>
+        <button class="btn btn-outline-danger">Add</button>
+        </center>
+    </form>

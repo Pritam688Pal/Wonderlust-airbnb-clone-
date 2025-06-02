@@ -1,0 +1,164 @@
+body {
+    height: 100%;
+}
+
+
+.plus-jakarta-sans {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* navber */
+.navbar {
+    height: 5rem;
+    background-color: white;
+}
+
+.fa-plane-departure {
+    color: #ff385c;
+    font-size: 2rem;
+}
+
+.nav-link {
+    color: #222222 !important;
+}
+
+.f-info-links a {
+    text-decoration: none;
+    color: #222222;
+    vertical-align: middle;
+}
+
+
+.f-info-links a:hover {
+    text-decoration: underline;
+}
+
+.f-info {
+    height: 8rem;
+    background-color: #ebebeb;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: space-evenly;
+    text-align: center;
+}
+
+.f-info-links {
+    width: 100%;
+    vertical-align: middle;
+}
+
+.f-info-socials {
+    width: 100%;
+    font-size: 1.5rem;
+    vertical-align: middle;
+    align-items: center;
+}
+
+.f-info-socials i {
+    margin: 2px;
+}
+
+.name {
+    width: 100%;
+    vertical-align: middle;
+}
+
+.row {
+    margin: 0 20px 0 20px;
+    justify-content: center;
+}
+
+.row div {
+    margin: 0 5px 4px 5px;
+}
+
+.row div a {
+    text-decoration: none;
+    color: #222222;
+}
+
+.card-img-top {
+    border-radius: 1rem !important;
+    width: 100% !important;
+    object-fit: cover !important;
+}
+
+.card {
+    border: none !important;
+    border-radius: 1rem;
+    padding: 0 !important;
+}
+
+.card-text p {
+    position: absolute;
+    bottom: 15px;
+    font-weight: 400;
+}
+
+.card-img-overlay {
+    opacity: 0;
+}
+
+.card-img-overlay:hover {
+    opacity: 0.8;
+}
+
+form {
+    margin: 30px 100px;
+    border: 2px #22222212 solid ;
+    border-radius: 1rem;
+    padding: 30px;
+}
+
+.btn {
+        color: #ff385c;
+        height: 70px;
+        width: 300px;
+}
+
+.btn:hover {
+    background-color: #ff385c;
+}
+
+h2 {
+    margin: 20px 100px;
+}
+
+.show-img {
+    height: 60vh;
+    width: 100vh;
+}
+
+.show-form {
+    border: none;
+    margin: 0 100px;
+    padding: 5px;
+
+}
+
+.show-form btn {
+    margin: none;
+}
+
+.outer-show-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.class-body {
+    width: 80%;
+}
+
+.show-title {
+    font-size: 2rem;
+}
+
+.class {
+    display: flex;
+    justify-content: center;
+}
