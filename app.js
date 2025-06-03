@@ -7,6 +7,7 @@ const methodOverride = require("method-override"); //for put,delete req
 const ejsMate = require("ejs-mate"); //for partision of ejs files **
 const wrapAsync = require("./utils/wrapAsyc.js");
 const expressError = require("./utils/expressError.js");
+const listingSchima = require("./schima.js");
 
 
 app.set("view engine","ejs"); //to decode ejs files
@@ -29,6 +30,16 @@ app.get("/",(req,res) => {
     res.send("Hi,I'm Root.");
 });
 
+const validateListing = (req,res,next) => {
+    let {error} = listingSchima.validate(req.body);
+    // console.log(error);
+    if (error) {
+        throw new expressError(error,400);
+    } else {
+        next();
+    }
+}
+
 //Index route
 app.get("/listings", wrapAsync(async(req,res) => {
     // const allListings = await listing.find({});
@@ -49,8 +60,8 @@ app.get("/listings/:id",wrapAsync(async(req,res) => {
 }));
 
 //create route
-app.post("/listings",wrapAsync(async(req,res)=>{
-    const newlisting = new listing(req.body.listing);
+app.post("/listings",validateListing,wrapAsync(async(req,res)=>{
+    const newlisting = new listing(req.body.listing);   
     await newlisting.save();
     res.redirect("/listings");
 }));
@@ -63,7 +74,7 @@ app.get("/listings/:id/edit",wrapAsync(async(req,res)=>{
 }));
 
 //update route
-app.put("/listings/:id",wrapAsync(async(req,res)=>{
+app.put("/listings/:id",validateListing,wrapAsync(async(req,res)=>{
     let { id } = req.params;
     await listing.findByIdAndUpdate(id, {...req.body.listing});
     res.redirect("/listings");
@@ -77,15 +88,14 @@ app.delete("/listings/:id",wrapAsync(async(req,res)=>{
 }));
 
 // page not found
-// app.all("*", (req, res, next) => {
-//     next(new expressError("Page Not Found!", 404));
-// });
+app.all('/*path', (req, res, next) => {
+    next(new expressError("Page Not Found!", 404));
+    // res.send("wildcard")
+});
 
 // err handelig
 app.use((err,req,res,next)=>{
-    let { message="somthing went wrong",statusCode=500 } = err;
-    res.send("err.ejs")
-    // res.status(statusCode).send(message);
+    res.status(err.statusCode).render("err.ejs",{ err });
 });
 
 //listning to port
