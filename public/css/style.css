@@ -68,12 +68,12 @@ body {
 }
 
 .row {
-    margin: 0 20px 0 20px;
+
     justify-content: center;
 }
 
 .row div {
-    margin: 0 5px 4px 5px;
+    margin: 0 7px 4px 7px;
 }
 
 .row div a {
@@ -161,4 +161,16 @@ h2 {
 .class {
     display: flex;
     justify-content: center;
+}
+
+.container{
+    max-width: 100%;
+}
+
+.show-edit {
+    margin-bottom: 1rem;
+}
+
+form div .btn {
+    justify-self: center;
 }

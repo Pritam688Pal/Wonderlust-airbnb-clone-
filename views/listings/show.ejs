@@ -1,15 +1,13 @@
 <% layout("./layouts/boilerplate.ejs") %>   
-<body>
     <div class="row mt-3">
         <div class="col-8 offset-2">
-            <h3>Listing Details : </h3>
             <div class="class">
-                <div class="card col-6 offset-3" style="width: 50rem;">
+                <div class="card col-6 offset-3" style="width: 50rem;">    
+                    <h3 class="show-edit"><%= e.title %></h3>
                     <img src="<%= e.image %>" class="card-img-top show-img" alt="Listing_Image">
                     <div class="card-body">
                         <p class="card-text">
                             <ul>
-                                <p class="show-title"><b><%= e.title %></b><p></p>
                                 <li><p><%= e.description %></p></li>
                                 <li><p></p><span>&#8377;</span> <%= e.price %>/-</p></li>
                                 <li><p></p><%= e.location %></p></li>
@@ -27,6 +25,53 @@
                     <button class="btn btn-outline-danger">Delete</button>
                 </form>
             </div>
+            <hr>
+            <div class="col-8 offset-2" style="width: 100%;">
+                <h4>Leave a Review</h4>
+                <form action="/listings/<%= e._id %>/reviews" method="post" class="mt-3 mb-3 needs-validation" novalidate>
+                    <div class="rating">
+                        <label for="review[rating]" class="form-label">Rating</label>
+                        <input class="form-range" type="range" min="1" max="5" id="rating" name="review[rating]">
+                    </div>
+                    <div class="comment">
+                        <label for="review[comment]" class="form-label">Comment</label>
+                        <textarea class="form-control" name="review[comment]" id="comment" cols="30" rows="10" required></textarea>
+                        <div class="invalid-feedback">
+                            Please enter somthing before Commenting.
+                        </div>
+                    </div>
+                    <center>
+                        <button class="btn btn-outline-danger" style="margin: 5px;">Submit</button>
+                    </center>
+                </form>
+            </div>
+            <hr>
+            
+            <p><h4>All Reviews</h4></p>
+            <ul>
+                <% for( let review of e.reviews ) { %>
+                    <div class="card" style="width: 100%;">
+                        <div class="card-body mb-3">
+                            <div class="card-title"><h4><b>ABC</b></h4></div>
+                            <hr>
+                            <p class="card-text">
+                            <% for( let index = 0; index < review.rating; index++ ) { %>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star-fill" viewBox="0 0 16 16">
+                                    <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                                </svg>
+                            <% } %>
+                            <% for( let index = 0; index < 5-review.rating; index++ ) { %>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16">
+                                    <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.56.56 0 0 0-.163-.505L1.71 6.745l4.052-.576a.53.53 0 0 0 .393-.288L8 2.223l1.847 3.658a.53.53 0 0 0 .393.288l4.052.575-2.906 2.77a.56.56 0 0 0-.163.506l.694 3.957-3.686-1.894a.5.5 0 0 0-.461 0z"/>
+                                </svg>
+                            <% } %>
+                            <p class="card-text"><%= review.comment %></p>
+                            <form  action="/listings/<%= e._id %>/reviews/<%= review._id %>?_method=DELETE" method="post" style="margin: unset; padding: unset; border: unset; display: inline-block; color: white; position: absolute; right: 0px;;">
+                                <button style="height: unset; width: unset; border: 0.5px solid;" class="btn btn-sm btn-denger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                <% } %>
+            </ul>
         </div>
     </div>
-</body>

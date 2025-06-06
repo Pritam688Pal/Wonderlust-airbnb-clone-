@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
+const { type } = require("../schima");
 const Schema = mongoose.Schema;
+const review = require("./review.js");
+
 
 const listingSchema =  new Schema({
     title:{
@@ -7,12 +10,22 @@ const listingSchema =  new Schema({
         required: true
     },
     description:String,
-    image:Object,
+    image:String,
     price:Number,
     location:String,
-    country:String
+    country:String,
+    reviews: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: "Review",
+            
+        }
+    ]
 });
 
-const listing = mongoose.model("listing",listingSchema);
+listingSchema.post("findByIdAndDelete",async (listing) => {
+    await review.deleteMany({_id: { $in: listing.reviews }})
+})
 
+const listing = mongoose.model("listing",listingSchema);
 module.exports = listing;

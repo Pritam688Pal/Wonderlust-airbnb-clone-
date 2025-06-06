@@ -1,13 +1,19 @@
 const express = require("express");
 const app = express();//express set up
 const mongoose = require("mongoose");
-const listing = require("./models/listing.js"); //schema
 const path = require("path"); //to serve other paths which isn't directly accessable
 const methodOverride = require("method-override"); //for put,delete req
 const ejsMate = require("ejs-mate"); //for partision of ejs files **
-const wrapAsync = require("./utils/wrapAsyc.js");
 const expressError = require("./utils/expressError.js");
-const listingSchima = require("./schima.js");
+const session = require("express-session");
+const flash = require("connect-flash");
+const passport = require("passport");
+const LocalStrategy = require("passport-local");
+const User = require("./models/user.js");
+
+const listings = require("./routes/listing.js");
+const review = require("./routes/review.js");
+const user = require("./routes/user.js");
 
 
 app.set("view engine","ejs"); //to decode ejs files
@@ -25,78 +31,65 @@ main()
     .then(()=>console.log("Connected to db"))
     .catch((err)=>console.log(err));
 
+const sessionOption = {
+    secret: "mysupersecretcode",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        expires: Date.now() + 7*24*60*60*1000,
+        maxAge: 7*24*60*60*1000,
+        httpOnly: true
+    }
+};
+
 //home route
 app.get("/",(req,res) => {
     res.send("Hi,I'm Root.");
 });
 
-const validateListing = (req,res,next) => {
-    let {error} = listingSchima.validate(req.body);
-    // console.log(error);
-    if (error) {
-        throw new expressError(error,400);
-    } else {
-        next();
-    }
-}
+app.use(session(sessionOption));
+app.use(flash());
 
-//Index route
-app.get("/listings", wrapAsync(async(req,res) => {
-    // const allListings = await listing.find({});
-    res.render("./listings/index.ejs",{ allListings:  await listing.find({})});
-    
-}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
 
-//new route
-app.get("/listings/new",wrapAsync((req,res) => {
-    res.render("listings/new.ejs");
-}));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
-//show route
-app.get("/listings/:id",wrapAsync(async(req,res) => {
-    let { id } = req.params;
-    const e = await listing.findById(id);
-    res.render("./listings/show.ejs",{ e });
-}));
+app.use((req,res,next) => {
+    res.locals.success = req.flash("Success");
+    res.locals.error = req.flash("error");
+    next();
+})
 
-//create route
-app.post("/listings",validateListing,wrapAsync(async(req,res)=>{
-    const newlisting = new listing(req.body.listing);   
-    await newlisting.save();
-    res.redirect("/listings");
-}));
+// app.get("/demouser",async(req,res)=>{
+//     let fakeUser = new User({
+//         email:"student@gmail.com",
+//         username: "delta-student"
+//     });
 
-//edit route
-app.get("/listings/:id/edit",wrapAsync(async(req,res)=>{
-    let { id } = req.params;
-    const e = await listing.findById(id);
-    await res.render("./listings/edit.ejs",{ e });
-}));
+//     let registeredUser = await User.register(fakeUser, "helloWorld");
+//     res.send(registeredUser);
+// })
 
-//update route
-app.put("/listings/:id",validateListing,wrapAsync(async(req,res)=>{
-    let { id } = req.params;
-    await listing.findByIdAndUpdate(id, {...req.body.listing});
-    res.redirect("/listings");
-}));
-
-//delete route
-app.delete("/listings/:id",wrapAsync(async(req,res)=>{
-    let { id } = req.params;
-    await listing.findByIdAndDelete(id);
-    res.redirect("/listings");
-}));
+app.use("/listings/:id/reviews",review);
+app.use("/listings",listings);
+app.use("/",user);
 
 // page not found
-app.all('/*path', (req, res, next) => {
-    next(new expressError("Page Not Found!", 404));
-    // res.send("wildcard")
+app.all(/^\/.*/, (req, res, next) => {
+    next(new expressError(404,"Page Not Found!"));
 });
 
 // err handelig
-app.use((err,req,res,next)=>{
-    res.status(err.statusCode).render("err.ejs",{ err });
+app.use((err, req, res, next) => {
+    //console.log(err);
+    const statusCode = err.status || 500;
+    const message = err.message || "Internal Server Error";
+    res.status(statusCode).render("err.ejs", {statusCode, message });
 });
+
 
 //listning to port
 const port = 8080;

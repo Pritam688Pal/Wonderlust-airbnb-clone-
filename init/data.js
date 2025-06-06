@@ -276,6 +276,46 @@ const sampleListings = [
     location: "Costa Rica",
     country: "Costa Rica",
   },
+  {
+        title: "Cozy Mountain Cabin",
+        description: "A beautiful cabin with a scenic mountain view. Perfect for weekend getaways.",
+        price: 150,
+        location: "Manali, Himachal Pradesh",
+        country: "India",
+        reviews: []
+    },
+    {
+        title: "Modern Apartment in City Center",
+        description: "A stylish and modern apartment located in the heart of the city.",
+        price: 250,
+        location: "New York, NY",
+        country: "USA",
+        reviews: []
+    },
+    {
+        title: "Beachside Bungalow",
+        description: "Relax in this serene bungalow right by the beach. Ideal for summer vacations.",
+        price: 200,
+        location: "Goa",
+        country: "India",
+        reviews: []
+    },
+    {
+        title: "Rustic Countryside Farmhouse",
+        description: "Escape to the countryside in this charming rustic farmhouse with farm activities.",
+        price: 120,
+        location: "Napa Valley, CA",
+        country: "USA",
+        reviews: []
+    },
+    {
+        title: "Luxury Villa with Private Pool",
+        description: "A luxurious villa featuring a private pool, modern amenities, and ocean views.",
+        price: 500,
+        location: "Bali",
+        country: "Indonesia",
+        reviews: []
+    }
 ];
 
 module.exports = { data: sampleListings };
